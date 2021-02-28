@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="120dp"
+    android:background="@drawable/corner_radius"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+
+    <TextView
+        android:id="@+id/item_Title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="@string/title"
+        android:textSize="20sp"
+        android:autoSizeTextType="uniform"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/corner_flat"
+        android:alpha="0.5"
+        android:backgroundTint="@color/black"
+        />
+
+
+    <TextView
+        android:id="@+id/item_Note"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="this is simple note test 1 2 3"
+        android:autoSizeMinTextSize="10dp"
+        android:textSize="15sp"
+        android:singleLine="false"
+        android:autoSizeTextType="uniform"
+        />
+
+
+</LinearLayout>

@@ -29,7 +29,7 @@
                             android:layout_height="match_parent">
 
                             <ImageView
-                                android:id="@+id/splash_imagView"
+                                android:id="@+id/main_imagView"
                                 android:layout_width="37.5dp"
                                 android:layout_height="37.5dp"
                                 android:src="@drawable/icon_note"
@@ -37,7 +37,7 @@
                                  />
 
                             <TextView
-                                android:id="@+id/splash_textView"
+                                android:id="@+id/main_textView"
                                 android:layout_width="100dp"
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
@@ -51,6 +51,7 @@
                                 tools:ignore="RtlCompat" />
 
                             <androidx.appcompat.widget.SearchView
+                                android:id="@+id/main_searchView"
                                 android:layout_width="match_parent"
                                 android:layout_gravity="end"
                                 android:layout_height="match_parent"
@@ -65,6 +66,7 @@
                     </androidx.appcompat.widget.Toolbar>
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/main_recyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 
@@ -73,7 +75,7 @@
         </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/main_floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
