@@ -2,25 +2,21 @@ package com.app;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.classes.DataBase;
 import com.app.classes.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -32,6 +28,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     FloatingActionButton fab;
 
+    AlertDialog alertDialog;
+    AlertDialog.Builder builder;
+    DataBase db;
+
+    ViewGroup viewGroup ;
+    View dialogView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +47,16 @@ public class MainActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.main_recyclerView);
         fab=findViewById(R.id.main_floatingActionButton);
 
+        viewGroup = findViewById(android.R.id.content);
+        dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
+
         fab.setOnClickListener(v -> {
 
             startDialogAddNote();
 
         });
 
+        db=DataBase.getInstance(this);
 
 
 
@@ -60,30 +66,52 @@ public class MainActivity extends AppCompatActivity {
     private void startDialogAddNote() {
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        ViewGroup viewGroup = findViewById(android.R.id.content);
+        builder = new AlertDialog.Builder(MainActivity.this);
 
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
         builder.setView(dialogView);
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        alertDialog.setCancelable(true);
-
-        alertDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+        builder.setCancelable(true);
+        builder.setNegativeButtonIcon(new ColorDrawable(Color.TRANSPARENT) );
+        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
             @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                EditText titleText=findViewById(R.id.dialog_Title);
-                EditText noteText=findViewById(R.id.dialog_Note);
-
-                Note note=new Note(titleText.getText().toString(),noteText.getText().toString());
-                note.saveNoteSQL();
-
-                return true;
+            public void onClick(DialogInterface dialog, int which) {
             }
         });
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
 
+                saveNewNote();
+
+            }
+        });
+        alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.show();
+
+    }
+
+    public void saveNewNote() {
+
+        EditText titleText= dialogView.findViewById(R.id.dialog_Title);
+        EditText noteTitle= dialogView.findViewById(R.id.dialog_Note);
+
+        Note note=new Note(titleText.getText().toString(),noteTitle.getText().toString());
+
+        if(note.saveNoteFire())
+        {
+            note.setSaveFire(true);
+        }
+        if(note.saveNoteSQL()){
+            viewGroup = findViewById(android.R.id.content);
+            dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
+        }
+
+
+    }
+
+    public void onClickAdd(View v){
+
+       alertDialog.cancel();
 
     }
 }

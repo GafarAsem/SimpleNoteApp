@@ -48,15 +48,16 @@
             android:singleLine="false"
             android:textSize="20dp" />
 
-            <Button
-                android:id="@+id/dialog_addBtn"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:text="add"
-                android:textColor="@color/white"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:backgroundTint="@color/gray" />
+        <Button
+            android:id="@+id/dialog_addBtn"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:onClick="onClickAdd"
+            android:text="add"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:backgroundTint="@color/gray" />
 
 
     </LinearLayout>
