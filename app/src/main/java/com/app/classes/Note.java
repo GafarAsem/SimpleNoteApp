@@ -1,5 +1,7 @@
 package com.app.classes;
 
+import android.content.Context;
+
 import com.app.adapters.HelpFireBase;
 
 import java.util.UUID;
@@ -58,9 +60,8 @@ public class Note implements NoteAction {
     }
 
     @Override
-    public boolean saveNoteFire() {
-
-        return HelpFireBase.addValue(this);
+    public void saveNoteFire(Context context) {
+        HelpFireBase.addValue(this,context);
     }
 
     @Override

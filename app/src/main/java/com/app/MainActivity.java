@@ -97,15 +97,11 @@ public class MainActivity extends AppCompatActivity {
 
         Note note=new Note(titleText.getText().toString(),noteTitle.getText().toString());
 
-        if(note.saveNoteFire())
-        {
-            note.setSaveFire(true);
-        }
-        if(note.saveNoteSQL()){
-            viewGroup = findViewById(android.R.id.content);
-            dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
-        }
+        note.saveNoteFire(this);
+        note.saveNoteSQL();
 
+        viewGroup = findViewById(android.R.id.content);
+        dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
 
     }
 
