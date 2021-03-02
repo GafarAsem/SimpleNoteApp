@@ -2,7 +2,11 @@ package com.app;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -13,14 +17,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.adapters.AdapterNotes;
 import com.app.classes.DataBase;
 import com.app.classes.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements AdapterNotes.onClickNotes {
 
     ImageView iconView;
     TextView  textView;
@@ -31,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     AlertDialog alertDialog;
     AlertDialog.Builder builder;
     DataBase db;
+
+    ArrayList<Note> Notes;
 
     ViewGroup viewGroup ;
     View dialogView;
@@ -57,7 +67,29 @@ public class MainActivity extends AppCompatActivity {
         });
 
         db=DataBase.getInstance(this);
+        Notes=db.getAllNotes();
 
+        setLayout();
+
+
+
+
+    }
+
+    private void setLayout() {
+//        recyclerView.setLayoutManager(
+//                new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+//        );
+
+        AdapterNotes AN=new AdapterNotes(Notes,this);
+        recyclerView.smoothScrollToPosition(0);
+        androidx.recyclerview.widget.GridLayoutManager gridLayoutManager=new androidx.recyclerview.widget.GridLayoutManager(this,2);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        try{
+            recyclerView.setAdapter(AN);
+        }catch (Exception e){
+            int i=0;
+        }
 
 
 
@@ -108,6 +140,11 @@ public class MainActivity extends AppCompatActivity {
     public void onClickAdd(View v){
 
        alertDialog.cancel();
+
+    }
+
+    @Override
+    public void onClickNote(int position) {
 
     }
 }

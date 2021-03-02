@@ -18,10 +18,14 @@ public class Note implements NoteAction {
         this.title = title;
         this.note = note;
         saveFire=false;
-
-
-
     }
+
+    public Note(String id, String title, String note) {
+        this.id = id;
+        this.title = title;
+        this.note = note;
+    }
+
     public boolean isSaveFire() {
         return saveFire;
     }

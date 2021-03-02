@@ -2,12 +2,15 @@ package com.app.classes;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
 import com.app.MainActivity;
+
+import java.util.ArrayList;
 
 public class DataBase extends SQLiteOpenHelper {
 
@@ -98,4 +101,32 @@ public class DataBase extends SQLiteOpenHelper {
 
 
     }
+
+
+
+    public ArrayList<Note> getAllNotes(){
+
+        ArrayList<Note> ArrayData = new ArrayList<>();
+        SQLiteDatabase db=this.getReadableDatabase();
+
+        Cursor res =db.rawQuery("SELECT * FROM "+DATABASE_TABLE,null);
+
+        if (res.moveToFirst()) {
+            while (!res.isAfterLast()) {
+                Note note = new Note(res.getString(res.getColumnIndex(DATABASE_CO1)),
+                                      res.getString(res.getColumnIndex(DATABASE_CO2)),
+                                        res.getString(res.getColumnIndex(DATABASE_CO3)));
+
+                ArrayData.add(note);
+                res.moveToNext();
+            }
+        }
+        return ArrayData;
+
+
+
+    }
+
+
+
 }

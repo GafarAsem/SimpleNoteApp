@@ -15,61 +15,58 @@
             android:orientation="vertical">
 
 
-                    <androidx.appcompat.widget.Toolbar
-                        android:id="@+id/main_toolbar"
-                        android:layout_width="match_parent"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/main_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp">
+
+                    <ImageView
+                        android:id="@+id/main_imagView"
+                        android:layout_width="37.5dp"
+                        android:layout_height="37.5dp"
+                        android:layout_gravity="bottom"
+                        android:src="@drawable/icon_note" />
+
+                    <TextView
+                        android:id="@+id/main_textView"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
-                        android:background="?attr/colorPrimary"
-                        android:minHeight="?attr/actionBarSize"
-                        android:theme="?attr/actionBarTheme"
-                        >
-                        <LinearLayout
-                            android:layout_margin="20dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent">
+                        android:layout_gravity="bottom"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:text="@string/note_app"
+                        android:textAlignment="textStart"
+                        android:textColor="@color/black"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        tools:ignore="RtlCompat" />
 
-                            <ImageView
-                                android:id="@+id/main_imagView"
-                                android:layout_width="37.5dp"
-                                android:layout_height="37.5dp"
-                                android:src="@drawable/icon_note"
-                                android:layout_gravity="bottom"
-                                 />
-
-                            <TextView
-                                android:id="@+id/main_textView"
-                                android:layout_width="100dp"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:layout_gravity="bottom"
-                                android:text="@string/note_app"
-                                android:textAlignment="textStart"
-                                android:layout_marginStart="10dp"
-                                android:textColor="@color/black"
-                                android:textSize="17sp"
-                                android:textStyle="bold"
-                                tools:ignore="RtlCompat" />
-
-                            <androidx.appcompat.widget.SearchView
-                                android:id="@+id/main_searchView"
-                                android:layout_width="match_parent"
-                                android:layout_gravity="end"
-                                android:layout_height="match_parent"
-                                android:gravity="end"
-                                android:background="@drawable/corner_radius"
-                            />
-
-
-
-                        </LinearLayout>
-
-                    </androidx.appcompat.widget.Toolbar>
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/main_recyclerView"
+                    <androidx.appcompat.widget.SearchView
+                        android:id="@+id/main_searchView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:background="@drawable/corner_radius"
+                        android:gravity="end" />
 
+
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_recyclerView"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
 
         </LinearLayout>
