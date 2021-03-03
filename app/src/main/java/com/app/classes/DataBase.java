@@ -79,7 +79,7 @@ public class DataBase extends SQLiteOpenHelper {
 
 
     }
-    public boolean updateNote(String ID, String title, String note, String saveSQL ) {
+    public boolean updateNote(String ID, String title, String note) {
 
         SQLiteDatabase db=this.getWritableDatabase();
         ContentValues contentValues=new ContentValues();
@@ -88,8 +88,6 @@ public class DataBase extends SQLiteOpenHelper {
 
         contentValues.put(DATABASE_CO2,title);
         contentValues.put(DATABASE_CO3,note);
-        contentValues.put(DATABASE_CO4,saveSQL);
-
 
 
         long result=db.update(DATABASE_TABLE,contentValues,DATABASE_CO1+" =?",new String[]{ID});

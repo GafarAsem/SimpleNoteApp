@@ -22,11 +22,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.adapters.AdapterNotes;
+import com.app.adapters.HelpFireBase;
 import com.app.classes.DataBase;
 import com.app.classes.Note;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity implements AdapterNotes.onClickNotes {
 
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
     DataBase db;
 
     ArrayList<Note> Notes;
-
+    AdapterNotes AN;
     ViewGroup viewGroup ;
     View dialogView;
 
@@ -61,14 +63,13 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
         dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
 
         fab.setOnClickListener(v -> {
-
             startDialogAddNote();
-
         });
 
         db=DataBase.getInstance(this);
         Notes=db.getAllNotes();
-
+        Collections.reverse(Notes);
+        AN=new AdapterNotes(Notes,this);
         setLayout();
 
 
@@ -77,14 +78,11 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
     }
 
     private void setLayout() {
-//        recyclerView.setLayoutManager(
-//                new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
-//        );
-
-        AdapterNotes AN=new AdapterNotes(Notes,this);
+        recyclerView=findViewById(R.id.main_recyclerView);
+        recyclerView.setLayoutManager(
+                new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL)
+        );
         recyclerView.smoothScrollToPosition(0);
-        androidx.recyclerview.widget.GridLayoutManager gridLayoutManager=new androidx.recyclerview.widget.GridLayoutManager(this,2);
-        recyclerView.setLayoutManager(gridLayoutManager);
         try{
             recyclerView.setAdapter(AN);
         }catch (Exception e){
@@ -103,22 +101,33 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
         builder.setView(dialogView);
         builder.setCancelable(true);
         builder.setNegativeButtonIcon(new ColorDrawable(Color.TRANSPARENT) );
-        builder.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
+        builder.setNegativeButton("cancel", (dialog, which) -> {
         });
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-
-                saveNewNote();
-
-            }
-        });
+        builder.setOnCancelListener(dialog -> saveNewNote());
         alertDialog = builder.create();
         alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.show();
+
+    }
+    private void startDialogAddNote(Note note) {
+
+
+        builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setView(dialogView);
+        builder.setCancelable(true);
+        builder.setNegativeButtonIcon(new ColorDrawable(Color.TRANSPARENT) );
+        builder.setNegativeButton("cancel", (dialog, which) -> {
+        });
+        builder.setOnCancelListener(dialog -> saveNewNote(note));
+        alertDialog = builder.create();
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        alertDialog.show();
+        EditText titleText= dialogView.findViewById(R.id.dialog_Title);
+        EditText noteTitle= dialogView.findViewById(R.id.dialog_Note);
+
+        titleText.setText(note.getTitle());
+        noteTitle.setText(note.getNote());
 
     }
 
@@ -127,10 +136,31 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
         EditText titleText= dialogView.findViewById(R.id.dialog_Title);
         EditText noteTitle= dialogView.findViewById(R.id.dialog_Note);
 
-        Note note=new Note(titleText.getText().toString(),noteTitle.getText().toString());
 
+
+        Note note=new Note(titleText.getText().toString(),noteTitle.getText().toString());
+        Notes.add(0,note);
+        AN.notifyDataSetChanged();
+        setLayout();
         note.saveNoteFire(this);
         note.saveNoteSQL();
+
+        viewGroup = findViewById(android.R.id.content);
+        dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
+
+
+    }
+    public void saveNewNote(Note Note){
+        EditText titleText= dialogView.findViewById(R.id.dialog_Title);
+        EditText noteTitle= dialogView.findViewById(R.id.dialog_Note);
+        Note.setTitle(titleText.getText().toString());
+        Note.setNote(noteTitle.getText().toString());
+
+
+        AN.notifyDataSetChanged();
+        setLayout();
+        HelpFireBase.updateValue(Note);
+        db.updateNote(Note.getId(),Note.getTitle(),Note.getNote());
 
         viewGroup = findViewById(android.R.id.content);
         dialogView = LayoutInflater.from(this).inflate(R.layout.note_dialog, viewGroup, false);
@@ -145,6 +175,13 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
 
     @Override
     public void onClickNote(int position) {
+
+        Note note=Notes.get(position);
+        startDialogAddNote( note);
+
+
+
+
 
     }
 }

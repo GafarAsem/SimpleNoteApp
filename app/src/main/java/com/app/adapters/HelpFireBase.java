@@ -13,8 +13,12 @@ import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -46,6 +50,40 @@ public class HelpFireBase {
                 }
             };
             thread.start();
+
+
+
+
+    }
+
+    public static void updateValue(Note note){
+
+
+
+
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+
+                Query query = databaseReference.orderByChild("id").equalTo(note.getId());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if(snapshot.exists()) {
+                            for(DataSnapshot dataSnapshot:snapshot.getChildren())
+                                dataSnapshot.getRef().setValue(note);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        };
+        thread.start();
 
 
 
