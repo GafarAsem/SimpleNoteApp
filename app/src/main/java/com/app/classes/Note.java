@@ -8,8 +8,11 @@ import java.util.UUID;
 
 public class Note implements NoteAction {
 
-    protected String id,title,note;
-    protected boolean saveFire;
+    private String id,title,note;
+    private boolean saveFire;
+
+    private Note() {
+    }
 
     public void setId(String id) {
         this.id = id;
@@ -23,7 +26,7 @@ public class Note implements NoteAction {
         this.note = note;
     }
 
-    static DataBase db=DataBase.getInstance(null);
+
 
     public Note(String title, String note) {
         this.id= UUID.randomUUID().toString();
@@ -69,15 +72,15 @@ public class Note implements NoteAction {
 
     @Override
     public boolean saveNoteSQL() {
-
+        DataBase db=DataBase.getInstance(null);
         boolean save=db.insertNote(id,title,note, String.valueOf(saveFire));
         return save;
 
     }
 
     @Override
-    public void saveNoteFire(Context context) {
-        HelpFireBase.addValue(this,context);
+    public void saveNoteFire() {
+        HelpFireBase.addValue(this);
     }
 
     @Override

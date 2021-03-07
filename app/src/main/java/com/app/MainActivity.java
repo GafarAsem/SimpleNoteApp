@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
     AlertDialog.Builder builder;
     DataBase db;
 
-    ArrayList<Note> Notes;
+    public static ArrayList<Note> Notes;
     AdapterNotes AN;
     ViewGroup viewGroup ;
     View dialogView;
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
         AN=new AdapterNotes(Notes,this);
         setLayout();
 
+        HelpFireBase.setListNote();
 
 
 
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements AdapterNotes.onCl
         Notes.add(0,note);
         AN.notifyDataSetChanged();
         setLayout();
-        note.saveNoteFire(this);
+        note.saveNoteFire();
         note.saveNoteSQL();
 
         viewGroup = findViewById(android.R.id.content);
